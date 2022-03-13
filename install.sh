@@ -141,7 +141,7 @@ setup_homebrew() {
     brew bundle
 
     # install fzf
-    echo -e
+    echo -
     info "Installing fzf"
     "$(brew --prefix)"/opt/fzf/install --key-bindings --completion --no-update-rc --no-bash --no-fish
 }
@@ -265,4 +265,4 @@ case "$1" in
 esac
 
 echo -e
-success "Done."
+success "Done."e
