@@ -91,8 +91,6 @@ plugins=(
 		zsh-autosuggestions
 		sudo
 		web-search
-		copypath
-		copyfile
 		history
 		git-flow-completion
 		zsh-aliases-exa
