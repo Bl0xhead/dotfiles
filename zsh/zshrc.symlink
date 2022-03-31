@@ -115,7 +115,11 @@ source $ZSH/oh-my-zsh.sh
 export EDITOR='nvim'
 export GIT_EDITOR='nvim'
 
-
+[[ -n "$(command -v nvim)" ]] && alias vim="nvim"
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
