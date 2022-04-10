@@ -120,6 +120,7 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias ....="cd ../../.."
 alias .....="cd ../../../.."
+alias python=python3
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
