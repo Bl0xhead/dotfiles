@@ -1,101 +1,70 @@
-# tmux display things in 256 colors
-set -g default-terminal "tmux-256color"
-set -as terminal-overrides ',xterm*:Tc:sitm=\E[3m'
+#Reload conf by Ctrl + B, then write :source-file ~/.tmux.conf
+set-option -g default-shell "/bin/zsh"
 
-set -g history-limit 20000
+# Status
+set -g message-style bg='#202330',fg='#8be9fd'
+set -g status-style bg='#202330',fg='#4cc4c6'
+set -g status-interval 1
 
-# automatically renumber tmux windows
-set -g renumber-windows on
+set -g status-left ''
+set -g status-right ''
 
-# unbind default prefix and set it to Ctrl+a
-unbind C-b
-set -g prefix C-a
-bind C-a send-prefix
+set-window-option -g window-status-style fg='#bd93f9',bg=default
+set-window-option -g window-status-current-style fg='#ff79c6',bg='#282a36'
 
-# for nested tmux sessions
-bind-key a send-prefix
+set -g status-justify centre
 
-# Activity Monitoring
-setw -g monitor-activity off
-set -g visual-activity off
 
-# Rather than constraining window size to the maximum size of any client
-# connected to the *session*, constrain window size to the maximum size of any
-# client connected to *that window*. Much more reasonable.
-setw -g aggressive-resize on
+# Status end
 
-# make delay shorter
-set -sg escape-time 0
+set -g prefix C-b
 
-# tile all windows
-unbind =
-bind = select-layout tiled
-
-# cycle through panes
-# unbind C-a
-# unbind o # this is the default key for cycling panes
-# bind ^A select-pane -t:.+
-
-# make window/pane index start with 1
 set -g base-index 1
-setw -g pane-base-index 1
+set-option -g mouse on
+set -g set-clipboard on
+set -g history-limit 10000
 
-set-option -g set-titles on
-set-option -g set-titles-string "#T - #W"
-set-window-option -g automatic-rename on
-set-option -g automatic-rename-format ""
+set -g default-terminal "xterm-256color"
+set -g terminal-overrides "xterm-256color"
+set -ga terminal-overrides ",xterm-256color:Tc"
 
-######################
-#### Key Bindings ####
-######################
 
-# reload config file
-bind r source-file ~/.tmux.conf \; display "Config Reloaded!"
+# Keybinds
 
-# split window and fix path for tmux 1.9
-bind | split-window -h -c "#{pane_current_path}"
-bind - split-window -v -c "#{pane_current_path}"
+# Movement and resize vim controls
+bind -r C-k resize-pane -U
+bind -r C-j resize-pane -D
+bind -r C-h resize-pane -L
+bind -r C-l resize-pane -R
 
-# synchronize all panes in a window
-bind y setw synchronize-panes
+bind -r k select-pane -U 
+bind -r j select-pane -D 
+bind -r h select-pane -L 
+bind -r l select-pane -R 
 
-# pane movement shortcuts
-bind h select-pane -L
-bind j select-pane -D
-bind k select-pane -U
-bind l select-pane -R
+# Rebind splits
+bind v split-window -h -c '#{pane_current_path}'
+bind b split-window -v -c '#{pane_current_path}'
 
-bind -r C-h select-window -t :-
-bind -r C-l select-window -t :+
+unbind Up     
+unbind Down   
+unbind Left   
+unbind Right  
 
-# Resize pane shortcuts
-bind -r H resize-pane -L 10
-bind -r J resize-pane -D 10
-bind -r K resize-pane -U 10
-bind -r L resize-pane -R 10
+unbind C-Up   
+unbind C-Down 
+unbind C-Left 
+unbind C-Right
 
-# enable mouse support for switching panes/windows
-setw -g mouse on
+# Rebind rename to R
+bind-key r command-prompt -I "#W" "rename-window '%%'"
 
-# set vi mode for copy mode
-setw -g mode-keys vi
-# more settings to make copy-mode more vim-like
-unbind [
-bind Escape copy-mode
-unbind p
-bind p paste-buffer
-bind -T copy-mode-vi v send -X begin-selection
+# Plugins
+set -g @plugin 'tmux-plugins/tmux-resurrect'
+set -g @plugin 'tmux-plugins/tmux-continuum'
 
-if-shell "uname | grep -q Darwin" {
-    bind -T copy-mode-vi y send -X copy-pipe-and-cancel 'tmux save-buffer - | pbcopy'; \
-    bind C-c run 'tmux save-buffer - | pbcopy'; \
-    bind C-v run 'tmux set-buffer "$(pbpaste)"; tmux paste-buffer'
-}
+set -g @continuum-restore 'on'
 
-if-shell '[[ $(uname -s) = Linux ]]' {
-    bind -T copy-mode-vi y send -X copy-pipe-and-cancel 'xclip -i -sel clipboard'; \
-    bind C-c run "tmux save-buffer - | xclip -i -sel clipboard"; \
-    bind C-v run 'tmux set-buffer "$(xclip -o -sel clipboard)"; tmux paste-buffer'
-}
+# Tmux package manager
+run '~/.tmux/plugins/tpm/tpm'
 
-source-file "~/code/dotfiles/tmux/themes/catpuccin.conf"
