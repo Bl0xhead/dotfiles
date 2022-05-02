@@ -4,7 +4,7 @@ M.setup_lsp = function(attach, capabilities)
    local lspconfig = require "lspconfig"
 
    -- lspservers with default config
-   local servers = { "vim-solidity", "solc", "solang", "rust-analyzer", "tsserver", "html", "cssls", "clangd" }
+   local servers = { "solc", "solang", "rust_analyzer", "tsserver", "html", "cssls", "clangd" }
 
    for _, lsp in ipairs(servers) do
       lspconfig[lsp].setup {
