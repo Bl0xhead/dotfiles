@@ -13,6 +13,9 @@ return {
          require("custom.plugins.null-ls").setup()
       end,
    },
+   ['iamcco/markdown-preview.nvim'] = {
+
+   },
 
    ["nvim-telescope/telescope-media-files.nvim"] = {
       after = "telescope.nvim",
