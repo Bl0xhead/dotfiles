@@ -6,4 +6,4 @@
    - zsh-aliases-exa
    - zsh-syntax-highlighting
 
-
+3. NvChad Update
