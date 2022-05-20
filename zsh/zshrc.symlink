@@ -142,3 +142,4 @@ source /home/callum/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/zsh-syntax
 export PATH="$PATH:/home/callum/.foundry/bin"
 . "$HOME/.cargo/env"
 alias config='/usr/bin/git --git-dir=/home/callum/.cfg/ --work-tree=/home/callum'
+source ~/powerlevel10k/powerlevel10k.zsh-theme
